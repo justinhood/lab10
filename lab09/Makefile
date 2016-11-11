@@ -24,11 +24,11 @@
 TARGET = lab09
 OBJECTS = main.o src/Point.o src/Vector.o src/PointBase.o src/Matrix.o
 
-LOCAL_INC_PATH = /Users/jpaone/Desktop/include
-LOCAL_LIB_PATH = /Users/jpaone/Desktop/lib
+LOCAL_INC_PATH = ./include
+LOCAL_LIB_PATH = ./lib
 LOCAL_BIN_PATH = /Users/jpaone/Desktop/bin
 
-BUILDING_IN_LAB = 1
+BUILDING_IN_LAB = 0
 
 USING_GLEW = 1
 USING_GLUI = 0

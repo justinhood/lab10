@@ -164,7 +164,7 @@ ifeq ($(USING_GLEW), 1)
 	else
         INCPATH += -I$(LOCAL_INC_PATH)
         LIBPATH += -L$(LOCAL_LIB_PATH)
-		LIBS += -lglew
+		LIBS += -lGLEW
 		WINDOWS_GLEW = 0
     endif
 else

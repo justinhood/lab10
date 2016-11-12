@@ -9,6 +9,8 @@
 #include <string.h>
 using namespace std;
 
+
+//GLOBALS
 // readTextFromFile() //////////////////////////////////////////////////////////////
 //
 //  Reads in a text file as a single string. Used to aid in shader loading.
@@ -82,19 +84,19 @@ GLuint compileShader( string filename, GLenum shaderType ) {
     
     /* create a handle to our shader */
     // TODO #1: create the shader handle
-    
+  	 shaderHandle=glCreateShader(shaderType); 
 	/* read in each text file and store the contents in a string */
 	readTextFromFile( filename.c_str(), shaderString );
 
     /* send the contents of each program to the GPU */
     // TODO #2: send the shader code to the GPU
-    
+    	glShaderSource(shaderHandle, 1,(const char**) &shaderString, NULL);
     /* we are good programmers so free up the memory used by each buffer */
     delete [] shaderString;
     
     /* compile each shader on the GPU */
     // TODO #3: compile the shader on the GPU glCompileShader( shaderHandle );
-
+	glCompileShader(shaderHandle);
     /* check the shader log */
     printLog( shaderHandle );
     
@@ -116,13 +118,14 @@ GLuint createShaderProgram( char *vertexShaderFilename, char *fragmentShaderFile
     
     /* get a handle to a shader program */
     // TODO #4: create the program handle
-    
+    	shaderProgramHandle=glCreateProgram();
     /* attach the vertex and fragment shaders to the shader program */
     // TODO #5: attach our shaders to the program
-    
+   	glAttachShader(shaderProgramHandle, vertexShaderHandle);
+	glAttachShader(shaderProgramHandle, fragmentShaderHandle); 
     /* link all the programs together on the GPU */
     // TODO #6: link our shader program together on the GPU
-
+	glLinkProgram(shaderProgramHandle);
     /* check the program log */
     printLog( shaderProgramHandle );
     

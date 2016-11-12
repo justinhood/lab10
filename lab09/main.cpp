@@ -29,12 +29,13 @@
 #include <SOIL/soil.h>
 
 #include "include/Shader_Utils.h"
-#include "include/Point.h""
+#include "include/Point.h"
 #include "include/Vector.h"
 
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include <fstream>
 #include <iostream>
@@ -51,7 +52,7 @@ int mouseX = 0, mouseY = 0;                 // last known X and Y of the mouse
 
 Point cameraTPR;                            // spherical coordinates of camera mapped XYZ - TPR (theta phi radius)
 Point cameraLookAt;                         // cpoint camera is looking at
-
+float currentTime=0;
 GLuint shaderProgramHandle = 0;             // handle to our shader program
 GLuint uniformTimeLoc = 0;					// location of our time uniform variable
 
@@ -185,7 +186,7 @@ void initScene()  {
     glShadeModel(GL_SMOOTH);
     
     // give our camera a pretty starting point
-    cameraTPR = Point(2.8, 2.0, 25.0);
+    cameraTPR = Point(2.8,2.0,25.0);
     cameraLookAt = Point(0,0,0);
 }
 
@@ -221,12 +222,18 @@ void renderScene(void)  {
     glPushMatrix(); {
     	// TODO #11: use our shader for the first sphere, but not the second sphere
 
+		glUseProgram(shaderProgramHandle);
     	// TODO #16: get our elapsed time and pass it to the shader
 
+			
+		currentTime=(float)glutGet(GLUT_ELAPSED_TIME)/(float)1000;
+		glUniform1f(uniformTimeLoc, currentTime);
+	
 		glutSolidSphere( 5.0f, 32.0f, 32.0f );
 
+		glUseProgram(0);
 		glTranslatef( 0, 0, -10 );
-    	glutSolidSphere( 5.0f, 32.0f, 32.0f );
+    		glutSolidSphere( 5.0f, 32.0f, 32.0f );
 
     }; glPopMatrix();
 
@@ -262,7 +269,9 @@ void normalKeys(unsigned char key, int x, int y)  {
 //  will perpetually re-register itself and tell GLUT that the screen needs
 //  be redrawn. yes, I said "needs be."
 //
-void myTimer(int value) {
+void myTimer(int value) 
+{
+
     glutPostRedisplay();
 
     glutTimerFunc((unsigned int)(1000.0 / 60.0), myTimer, 0);
@@ -279,8 +288,10 @@ void myTimer(int value) {
 void setupShaders() {
 
 	// TODO #7: compile shader program
-    
+	shaderProgramHandle=createShaderProgram("shaders/customShader.v.glsl", "shaders/customShader.f.glsl"); 
 	// TODO #15: get our uniform location
+	uniformTimeLoc=glGetUniformLocation(shaderProgramHandle, "time");
+
 }
 
 //
